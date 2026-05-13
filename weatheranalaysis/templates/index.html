@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electric Prediction From Weather</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: { primary: "#135bec", darkbg: "#0f172a" },
+          fontFamily: { display: ["Space Grotesk", "sans-serif"] },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { font-family: "Space Grotesk", sans-serif; }
+    .flatpickr-calendar { background: #1e293b; color: white; border-radius: 8px; }
+    .flatpickr-day.selected { background-color: #2563eb; }
+  </style>
+</head>
+
+<body class="bg-darkbg text-white">
+  <div class="min-h-screen flex flex-col items-center px-6 py-10">
+    <header class="w-full flex items-center justify-between mb-10 max-w-6xl">
+      <div class="flex items-center gap-2 text-primary font-bold text-lg">
+        <span class="material-symbols-outlined text-primary">bolt</span>
+        Electric Prediction From Weather
+      </div>
+    </header>
+
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl w-full">
+      <!-- Left -->
+      <section class="bg-black/20 border border-gray-700 p-6 rounded-xl">
+        <h2 class="text-xl font-bold mb-4">Select Forecast Date</h2>
+        <div class="relative mb-4">
+          <span class="material-symbols-outlined absolute left-3 top-3 text-gray-400">calendar_month</span>
+          <input id="forecast-date" type="text" placeholder="Select date (yyyy-mm-dd)"
+            class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-600 bg-gray-900 text-white focus:ring-primary focus:border-primary cursor-pointer">
+        </div>
+        <p id="selected-date" class="text-sm text-gray-400 mb-6 text-center italic">📅 No date selected</p>
+
+        <!-- Weather Cards -->
+        <div id="weather-info" class="flex flex-col gap-3">
+          <div class="flex items-start gap-3 bg-gray-800/50 p-3 rounded-lg">
+            <span class="material-symbols-outlined text-blue-400">thermostat</span>
+            <div><p class="text-sm text-gray-400">Temperature</p><p id="temp" class="text-lg font-bold">— °C</p></div>
+          </div>
+          <div class="flex items-start gap-3 bg-gray-800/50 p-3 rounded-lg">
+            <span class="material-symbols-outlined text-cyan-400">humidity_percentage</span>
+            <div><p class="text-sm text-gray-400">Humidity</p><p id="hum" class="text-lg font-bold">— %</p></div>
+          </div>
+          <div class="flex items-start gap-3 bg-gray-800/50 p-3 rounded-lg">
+            <span class="material-symbols-outlined text-green-400">rainy</span>
+            <div><p class="text-sm text-gray-400">Rainfall</p><p id="rain" class="text-lg font-bold">— mm</p></div>
+          </div>
+          <div class="flex items-start gap-3 bg-gray-800/50 p-3 rounded-lg">
+            <span class="material-symbols-outlined text-gray-400">air</span>
+            <div><p class="text-sm text-gray-400">Wind Speed</p><p id="wind" class="text-lg font-bold">— km/h</p></div>
+          </div>
+          <div class="flex items-start gap-3 bg-gray-800/50 p-3 rounded-lg">
+            <span class="material-symbols-outlined text-orange-400">local_fire_department</span>
+            <div><p class="text-sm text-gray-400">CDD</p><p id="cdd" class="text-lg font-bold">—</p></div>
+          </div>
+          <div class="flex items-start gap-3 bg-gray-800/50 p-3 rounded-lg">
+            <span class="material-symbols-outlined text-sky-400">ac_unit</span>
+            <div><p class="text-sm text-gray-400">HDD</p><p id="hdd" class="text-lg font-bold">—</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right -->
+      <section class="lg:col-span-2 bg-black/20 border border-gray-700 p-6 rounded-xl">
+        <h2 class="text-xl font-bold mb-4">Electricity Prediction</h2>
+        <p id="forecast-text" class="text-gray-400 mb-6">Forecast for selected date</p>
+        <div id="result-box" class="bg-gray-900 rounded-lg text-center p-8 min-h-[250px]">
+          <p class="text-gray-400 mb-2">Estimated Electricity Demand</p>
+          <p id="predicted-value" class="text-6xl font-black text-primary">— <span class="text-3xl">MWh</span></p>
+          <p id="trend-info" class="mt-4 text-sm text-teal-400">Awaiting prediction...</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- JS -->
+  <script>
+    flatpickr("#forecast-date", {
+      dateFormat: "Y-m-d",
+      altInput: true,
+      altFormat: "F j, Y",
+      theme: "dark",
+      onChange: async function(selectedDates, dateStr) {
+        const selectedDate = dateStr;
+        document.getElementById("selected-date").textContent = "📅 Selected: " + selectedDate;
+        document.getElementById("trend-info").textContent = "Predicting...";
+
+        const res = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ date: selectedDate })
+        });
+
+        const data = await res.json();
+
+        if (data.error) {
+          document.getElementById("trend-info").textContent = data.error;
+          return;
+        }
+
+        document.getElementById("temp").textContent = data.temperature + " °C";
+        document.getElementById("hum").textContent = data.humidity + " %";
+        document.getElementById("rain").textContent = data.rainfall + " mm";
+        document.getElementById("wind").textContent = data.wind_speed + " km/h";
+        document.getElementById("cdd").textContent = data.CDD;
+        document.getElementById("hdd").textContent = data.HDD;
+
+        document.getElementById("predicted-value").innerHTML = 
+          `${data.prediction} <span class='text-3xl'>MWh</span>`;
+        document.getElementById("trend-info").textContent = "Prediction successful ✅";
+      }
+    });
+  </script>
+</body>
+</html>

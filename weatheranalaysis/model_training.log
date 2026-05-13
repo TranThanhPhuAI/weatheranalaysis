@@ -1,0 +1,121 @@
+2025-11-12 02:11:08,566 - ML_Project_Logger - INFO - --- Logger 'ML_Project_Logger' đã được khởi tạo. Bắt đầu phiên làm việc. ---
+2025-11-12 02:11:08,574 - ML_Project_Logger - INFO - Đang đọc dữ liệu điện từ file local: elec9.csv
+2025-11-12 02:11:08,575 - ML_Project_Logger - INFO - Đang đọc dữ liệu thời tiết từ file local: fake_full_data.csv
+2025-11-12 02:11:08,595 - ML_Project_Logger - INFO - Đã đọc dữ liệu thành công!
+2025-11-12 02:11:08,596 - ML_Project_Logger - INFO - Shape df_elec: (2506, 5)
+2025-11-12 02:11:08,596 - ML_Project_Logger - INFO - Shape df_weather: (12309, 10)
+2025-11-12 02:11:08,617 - ML_Project_Logger - INFO - Đang gộp (merge) df_elec và df_weather...
+2025-11-12 02:11:08,624 - ML_Project_Logger - INFO - Shape sau khi gộp: (12309, 14)
+2025-11-12 02:11:08,648 - ML_Project_Logger - INFO - Đang thực hiện feature engineering...
+2025-11-12 02:11:08,659 - ML_Project_Logger - INFO - Tạo features mới hoàn tất (dayofweek, month, is_weekend).
+2025-11-12 02:11:08,680 - ML_Project_Logger - INFO - --- Bắt đầu Khám phá dữ liệu ---
+2025-11-12 02:11:08,682 - ML_Project_Logger - INFO - Đang kiểm tra thông tin (df.info()) của DataFrame đã gộp...
+2025-11-12 02:11:08,689 - ML_Project_Logger - INFO - Kết quả df.info():
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 12309 entries, 0 to 12308
+Data columns (total 17 columns):
+ #   Column          Non-Null Count  Dtype         
+---  ------          --------------  -----         
+ 0   date            12309 non-null  datetime64[ns]
+ 1   location        12309 non-null  object        
+ 2   demand          12309 non-null  int64         
+ 3   net_generation  12309 non-null  int64         
+ 4   interchange     12309 non-null  float64       
+ 5   PRCP            12309 non-null  float64       
+ 6   RHAV            12309 non-null  int64         
+ 7   TAVG            12309 non-null  float64       
+ 8   TMAX            12309 non-null  float64       
+ 9   TMIN            12309 non-null  float64       
+ 10  station         12309 non-null  object        
+ 11  AWND            12309 non-null  float64       
+ 12  CDD             12309 non-null  float64       
+ 13  HDD             12309 non-null  float64       
+ 14  dayofweek       12309 non-null  int32         
+ 15  month           12309 non-null  int32         
+ 16  is_weekend      12309 non-null  int32         
+dtypes: datetime64[ns](1), float64(8), int32(3), int64(3), object(2)
+memory usage: 1.5+ MB
+
+2025-11-12 02:11:08,702 - ML_Project_Logger - INFO - Đang thực hiện thống kê mô tả (df.describe())...
+2025-11-12 02:11:08,743 - ML_Project_Logger - INFO - Đang tạo biểu đồ Line Plot: Electricity Demand Over Time...
+2025-11-12 02:11:59,868 - ML_Project_Logger - INFO - Tạo biểu đồ Line Plot hoàn tất.
+2025-11-12 02:11:59,910 - ML_Project_Logger - INFO - Đang tạo biểu đồ Scatter Plot: Temperature vs Electricity Demand...
+2025-11-12 02:12:00,264 - ML_Project_Logger - INFO - Tạo biểu đồ Scatter Plot hoàn tất.
+2025-11-12 02:12:00,283 - ML_Project_Logger - INFO - Đang tạo biểu đồ Heatmap: Tương quan giữa các biến...
+2025-11-12 02:12:00,795 - ML_Project_Logger - INFO - Tạo biểu đồ Heatmap hoàn tất
+2025-11-12 02:12:00,807 - ML_Project_Logger - INFO - Đang tạo biểu đồ Boxplot: Phân phối nhu cầu theo tháng...
+2025-11-12 02:12:01,178 - ML_Project_Logger - INFO - Tạo biểu đồ Boxplot hoàn tất.
+2025-11-12 02:12:01,193 - ML_Project_Logger - INFO - Các features được chọn (X): ['PRCP', 'RHAV', 'TAVG', 'TMAX', 'TMIN', 'AWND', 'CDD', 'HDD', 'dayofweek', 'month', 'is_weekend']
+2025-11-12 02:12:01,194 - ML_Project_Logger - INFO - Biến mục tiêu (y): demand
+2025-11-12 02:12:01,197 - ML_Project_Logger - INFO - Đang chia train/test với tham số: {'test_size': 0.2, 'random_state': 42}
+2025-11-12 02:12:01,204 - ML_Project_Logger - INFO - Shape X_train: (9847, 11), Shape y_train: (9847,)
+2025-11-12 02:12:01,205 - ML_Project_Logger - INFO - Shape X_test: (2462, 11), Shape y_test: (2462,)
+2025-11-12 02:12:01,216 - ML_Project_Logger - INFO - Đang chuẩn hóa features bằng RobustScaler...
+2025-11-12 02:12:01,230 - ML_Project_Logger - INFO - Chuẩn hóa hoàn tất.
+2025-11-12 02:12:01,350 - ML_Project_Logger - INFO - --- Bắt đầu train mô hình: Linear Regression ---
+2025-11-12 02:12:01,373 - ML_Project_Logger - INFO - Train Linear Regression hoàn tất sau 0.0225 giây.
+2025-11-12 02:12:01,375 - ML_Project_Logger - INFO - --- Thống kê dự đoán (Linear Regression) ---
+2025-11-12 02:12:01,376 - ML_Project_Logger - INFO - Tổng số mẫu test: 2462
+2025-11-12 02:12:01,378 - ML_Project_Logger - INFO - Tổng thời gian dự đoán: 0.0010 giây
+2025-11-12 02:12:01,379 - ML_Project_Logger - INFO - Thời gian dự đoán trung bình/mẫu: 0.00000041 giây
+2025-11-12 02:12:01,394 - ML_Project_Logger - INFO - --- Bắt đầu train mô hình: Random Forest ---
+2025-11-12 02:12:01,394 - ML_Project_Logger - INFO - Hyperparameters (RF): {'n_estimators': 200, 'random_state': 42}
+2025-11-12 02:12:12,539 - ML_Project_Logger - INFO - Train Random Forest hoàn tất sau 11.1419 giây.
+2025-11-12 02:12:12,540 - ML_Project_Logger - INFO - RAM sử dụng khi train (RF): 159.88 MB
+2025-11-12 02:12:12,724 - ML_Project_Logger - INFO - --- Thống kê dự đoán (Random Forest) ---
+2025-11-12 02:12:12,726 - ML_Project_Logger - INFO - Tổng số mẫu train: 9847
+2025-11-12 02:12:12,727 - ML_Project_Logger - INFO - Tổng số mẫu test: 2462
+2025-11-12 02:12:12,729 - ML_Project_Logger - INFO - Tổng thời gian dự đoán: 0.1825 giây
+2025-11-12 02:12:12,730 - ML_Project_Logger - INFO - Thời gian dự đoán trung bình/mẫu: 0.00007414 giây
+2025-11-12 02:12:12,731 - ML_Project_Logger - INFO - RAM sử dụng khi dự đoán (RF): 0.01562500 MB
+2025-11-12 02:12:12,750 - ML_Project_Logger - INFO - Định nghĩa hàm evaluate_model()...
+2025-11-12 02:12:12,766 - ML_Project_Logger - INFO - --- BẮT ĐẦU ĐÁNH GIÁ TỔNG QUAN CÁC MÔ HÌNH ---
+2025-11-12 02:12:12,770 - ML_Project_Logger - INFO - --- Đánh giá mô hình: Linear Regression ---
+2025-11-12 02:12:12,771 - ML_Project_Logger - INFO -   - MAE: 49484.56
+2025-11-12 02:12:12,772 - ML_Project_Logger - INFO -   - RMSE: 63116.15
+2025-11-12 02:12:12,774 - ML_Project_Logger - INFO -   - R²: 0.635
+2025-11-12 02:12:12,779 - ML_Project_Logger - INFO - --- Đánh giá mô hình: Random Forest ---
+2025-11-12 02:12:12,780 - ML_Project_Logger - INFO -   - MAE: 29304.56
+2025-11-12 02:12:12,781 - ML_Project_Logger - INFO -   - RMSE: 41240.22
+2025-11-12 02:12:12,782 - ML_Project_Logger - INFO -   - R²: 0.844
+2025-11-12 02:12:12,784 - ML_Project_Logger - INFO - --- ĐÁNH GIÁ TỔNG QUAN HOÀN TẤT ---
+2025-11-12 02:12:12,797 - ML_Project_Logger - INFO - Đang tạo biểu đồ so sánh phân phối...
+2025-11-12 02:12:13,158 - ML_Project_Logger - INFO - Tạo biểu đồ hoàn tất.
+2025-11-12 02:12:13,175 - ML_Project_Logger - INFO - --- KẾT THÚC PHIÊN LÀM VIỆC ---
+2025-11-12 02:22:51,058 - ML_Project_Logger - INFO - Đang tạo biểu đồ Line Plot: Electricity Demand Over Time...
+2025-11-12 02:22:51,184 - ML_Project_Logger - INFO - Tạo biểu đồ Line Plot hoàn tất.
+2025-11-12 02:22:51,339 - ML_Project_Logger - INFO - Đang tạo biểu đồ Scatter Plot: Temperature vs Electricity Demand...
+2025-11-12 02:22:51,423 - ML_Project_Logger - INFO - Tạo biểu đồ Scatter Plot hoàn tất.
+2025-11-12 02:22:51,621 - ML_Project_Logger - INFO - Đang tạo biểu đồ Heatmap: Tương quan giữa các biến...
+2025-11-12 02:22:52,659 - ML_Project_Logger - INFO - Đang chuẩn hóa features bằng RobustScaler...
+2025-11-12 02:22:52,666 - ML_Project_Logger - INFO - Chuẩn hóa hoàn tất.
+2025-11-12 02:22:53,121 - ML_Project_Logger - INFO - --- Bắt đầu train mô hình: Linear Regression ---
+2025-11-12 02:22:53,126 - ML_Project_Logger - INFO - Train Linear Regression hoàn tất sau 0.0040 giây.
+2025-11-12 02:22:53,127 - ML_Project_Logger - INFO - --- Thống kê dự đoán (Linear Regression) ---
+2025-11-12 02:22:53,128 - ML_Project_Logger - INFO - Tổng số mẫu test: 2462
+2025-11-12 02:22:53,128 - ML_Project_Logger - INFO - Tổng thời gian dự đoán: 0.0000 giây
+2025-11-12 02:22:53,129 - ML_Project_Logger - INFO - Thời gian dự đoán trung bình/mẫu: 0.00000000 giây
+2025-11-12 02:22:53,421 - ML_Project_Logger - INFO - --- Bắt đầu train mô hình: Random Forest ---
+2025-11-12 02:22:53,422 - ML_Project_Logger - INFO - Hyperparameters (RF): {'n_estimators': 200, 'random_state': 42}
+2025-11-12 02:22:59,438 - ML_Project_Logger - INFO - Train Random Forest hoàn tất sau 5.9993 giây.
+2025-11-12 02:22:59,439 - ML_Project_Logger - INFO - RAM sử dụng khi train (RF): 162.45 MB
+2025-11-12 02:22:59,526 - ML_Project_Logger - INFO - --- Thống kê dự đoán (Random Forest) ---
+2025-11-12 02:22:59,526 - ML_Project_Logger - INFO - Tổng số mẫu train: 9847
+2025-11-12 02:22:59,527 - ML_Project_Logger - INFO - Tổng số mẫu test: 2462
+2025-11-12 02:22:59,528 - ML_Project_Logger - INFO - Tổng thời gian dự đoán: 0.0874 giây
+2025-11-12 02:22:59,528 - ML_Project_Logger - INFO - Thời gian dự đoán trung bình/mẫu: 0.00003551 giây
+2025-11-12 02:22:59,529 - ML_Project_Logger - INFO - RAM sử dụng khi dự đoán (RF): 0.03906250 MB
+2025-11-12 02:22:59,536 - ML_Project_Logger - INFO - Định nghĩa hàm evaluate_model()...
+2025-11-12 02:22:59,543 - ML_Project_Logger - INFO - --- BẮT ĐẦU ĐÁNH GIÁ TỔNG QUAN CÁC MÔ HÌNH ---
+2025-11-12 02:22:59,545 - ML_Project_Logger - INFO - --- Đánh giá mô hình: Linear Regression ---
+2025-11-12 02:22:59,546 - ML_Project_Logger - INFO -   - MAE: 49484.56
+2025-11-12 02:22:59,546 - ML_Project_Logger - INFO -   - RMSE: 63116.15
+2025-11-12 02:22:59,547 - ML_Project_Logger - INFO -   - R²: 0.635
+2025-11-12 02:22:59,549 - ML_Project_Logger - INFO - --- Đánh giá mô hình: Random Forest ---
+2025-11-12 02:22:59,549 - ML_Project_Logger - INFO -   - MAE: 29304.56
+2025-11-12 02:22:59,550 - ML_Project_Logger - INFO -   - RMSE: 41240.22
+2025-11-12 02:22:59,550 - ML_Project_Logger - INFO -   - R²: 0.844
+2025-11-12 02:22:59,551 - ML_Project_Logger - INFO - --- ĐÁNH GIÁ TỔNG QUAN HOÀN TẤT ---
+2025-11-12 02:22:59,557 - ML_Project_Logger - INFO - Đang tạo biểu đồ so sánh phân phối...
+2025-11-12 02:22:59,685 - ML_Project_Logger - INFO - Tạo biểu đồ hoàn tất.
+2025-11-12 02:22:59,692 - ML_Project_Logger - INFO - --- KẾT THÚC PHIÊN LÀM VIỆC ---
